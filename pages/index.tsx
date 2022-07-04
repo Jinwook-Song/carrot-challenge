@@ -1,85 +1,101 @@
-import type { NextPage } from 'next';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { cls, EMAIL_VALIDATION_CHECK } from '../libs/client/util';
 
-interface IBillions {
-  id: string;
+interface FormProps {
   name: string;
-  squareImage: string;
-  netWorth: number;
-  industries: string[];
+  email: string;
+  password: string;
 }
 
-const Home: NextPage = () => {
-  const [people, setPeople] = useState<IBillions[]>([]);
-  const router = useRouter();
-  useEffect(() => {
-    fetch('https://billions-api.nomadcoders.workers.dev')
-      .then((response) => response.json())
-      .then((data) => setPeople(data as IBillions[]));
-  }, []);
+function Home() {
+  const {
+    register,
+    getValues,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormProps>({ mode: 'onChange' });
 
-  const onClick = (id: string) => {
-    router.push(`/person//${id}`);
+  const onValid = () => {
+    console.log(getValues());
+    reset();
   };
-
   return (
-    <main className='container'>
-      {people?.map((person) => (
-        <div
-          onClick={() => onClick(person.id)}
-          className='person transition-all'
-          key={person.name}
-        >
-          <img src={person.squareImage} alt={person.name} />
-          <div className='details'>
-            <Link href={`/person/${person.id}`}>
-              <h2>
-                {person.name}
-                <a></a>
-              </h2>
-            </Link>
-            <span className='fontse'>
-              {Math.floor(person.netWorth / 1000)} Billion / {person.industries}
-            </span>
-          </div>
+    <main className='flex flex-col space-y-8'>
+      <h2 className='text-3xl font-semibold'>Create Account</h2>
+      <form
+        className='flex flex-col space-y-5'
+        onSubmit={handleSubmit(onValid)}
+      >
+        <div className='flex flex-col space-y-1'>
+          <label className='font-medium uppercase' htmlFor='name'>
+            name
+          </label>
+          <input
+            className='text-amber-700 focus:ring-2 ring-amber-900 outline-none p-2 rounded-sm shadow-[0_30px_40px_-17px_#9999994c]'
+            {...register('name', { required: 'Please write down your name' })}
+            id='name'
+            type='text'
+          />
+          {errors.name?.message && (
+            <span className='text-amber-600'>{errors.name.message}</span>
+          )}
         </div>
-      ))}
-      <style jsx>{`
-        .container {
-          width: 100vw;
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          padding: 20px;
-          gap: 20px;
-          margin: auto;
-        }
-        .person {
-          border-radius: 10px;
-          overflow: hidden;
-          cursor: pointer;
-        }
-        .person:hover {
-          transform: scale(1.05) translateY(-10px);
-        }
-        .details {
-          background-color: #34495e;
-          padding: 2px 5px;
-          text-overflow: clip;
-          white-space: nowrap;
-        }
-        .details h2 {
-          color: #fff;
-          font-weight: bold;
-        }
-        .details span {
-          font-weight: 600;
-          font-size: 12px;
-        }
-      `}</style>
+        <div className='flex flex-col space-y-1'>
+          <label className='font-medium uppercase' htmlFor='email'>
+            email
+          </label>
+          <input
+            className='text-amber-700 focus:ring-2 ring-amber-900 outline-none p-2 rounded-sm shadow-[0_30px_40px_-17px_#9999994c]'
+            {...register('email', {
+              required: 'Please write down your email',
+              pattern: {
+                value: EMAIL_VALIDATION_CHECK,
+                message: 'Please enter a valid email.',
+              },
+            })}
+            id='email'
+            type='email'
+          />
+          {errors.email?.message && (
+            <span className='text-amber-600'>{errors.email.message}</span>
+          )}
+        </div>
+        <div className='flex flex-col space-y-1'>
+          <label className='font-medium uppercase' htmlFor='password'>
+            password
+          </label>
+          <input
+            className='text-amber-700 focus:ring-2 ring-amber-900 outline-none p-2 rounded-sm shadow-[0_30px_40px_-17px_#9999994c]'
+            {...register('password', {
+              required: 'Please write down your password',
+              minLength: {
+                value: 4,
+                message: 'Password must be at least 4',
+              },
+            })}
+            id='password'
+            type='password'
+          />
+          {errors.password?.message && (
+            <span className='text-amber-600'>{errors.password.message}</span>
+          )}
+        </div>
+        <button
+          className={cls(
+            'border-2 p-3 rounded-sm transition-color duration-200 shadow-[0_10px_80px_-10px_#8575754a]',
+            errors.email || errors.name || errors.password
+              ? 'cursor-not-allowed bg-slate-900 border-none text-slate-600'
+              : 'hover:bg-amber-900'
+          )}
+          onClick={handleSubmit(onValid)}
+        >
+          Sign up
+        </button>
+      </form>
     </main>
   );
-};
+}
 
 export default Home;

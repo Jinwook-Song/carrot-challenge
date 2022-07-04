@@ -1,34 +1,18 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Challenge goals:
 
-## Getting Started
+React Hook Form, Prisma, SWR, API Routes 그리고 iron-session 를 사용하여. 아래 3개의 페이지를 빌드하세요.
+Sign Up: 유저는 계정을 생성할 수 있습니다.
+Sign In: 유저는 로그인 할 수 있습니다.
+Home: 유저는 프로필을 볼 수 있습니다.
 
-First, run the development server:
+요구사항:
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+유저가 로그인 되어있지 않으면 / 페이지는 /create-account 페이지로 리다이렉트 되어야 한다.
+유저가 계정을 생성한 후에는. /log-in 페이지로 리다이렉트 되어야 한다.
+유저가 로그인 할 때에는 / 으로 리다이렉트 하여 그들의 프로필을 볼 수 있어야 한다.
+Notes:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+[blueprint](https://codesandbox.io/s/nextjs-prisma-sqlite-2n35ov?file=/prisma/schema.prisma)
+Prisma is configured in the blueprint with SQLite.
+When you modify your prisma.schema run npm run db-sync.
+Here is how you can run commands in Codesandbox:
