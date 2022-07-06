@@ -8,7 +8,7 @@ export default function useUser() {
   const router = useRouter();
   useEffect(() => {
     if (data && !data.ok) {
-      router.replace('/enter');
+      router.replace('/create-account');
     }
   }, [data, router]);
 
